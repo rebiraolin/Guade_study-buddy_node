@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const searchController = require('../controllers/searchController');
-const authMiddleware = require('../middleware/authMiddleware');
+const {authenticate} = require('../middleware/userMiddleware');
 
 // Apply authentication middleware to all routes
-router.use(authMiddleware);
+router.use(authenticate);
 
 // Advanced search with multiple filters
 router.get('/advanced', searchController.advancedSearch);
@@ -24,4 +24,4 @@ router.get('/date-range', searchController.getSessionsByDateRange);
 // Get sessions with available spots
 router.get('/available-spots', searchController.getSessionsWithSpots);
 
-module.exports = router; 
+module.exports = router;

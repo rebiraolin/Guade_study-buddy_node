@@ -1,20 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const studySessionController = require('../controllers/studySessionController');
-const authMiddleware = require('../middleware/authMiddleware');
+const { authenticate } = require('../middleware/userMiddleware'); // ✅ destructure authenticate
 
 // Apply authentication middleware to all routes
-router.use(authMiddleware);
+router.use(authenticate); // ✅ now this is a function
 
 // Specific routes first
 router.get('/upcoming/hour', studySessionController.getUpcomingSessions);
 router.get('/user/interests', studySessionController.getUserInterests);
 
 // Group and session management routes
-router.get('/groups/:groupId/next', studySessionController.getNextSessionDetails);
-router.get('/groups/:groupId/upcoming', studySessionController.getGroupUpcomingSessions);
-router.put('/sessions/:sessionId/topics', studySessionController.updateSessionTopics);
-router.put('/sessions/:sessionId/group-details', studySessionController.updateGroupDetails);
+router.get(
+  '/groups/:groupId/next',
+  studySessionController.getNextSessionDetails
+);
+router.get(
+  '/groups/:groupId/upcoming',
+  studySessionController.getGroupUpcomingSessions
+);
+router.put(
+  '/sessions/:sessionId/topics',
+  studySessionController.updateSessionTopics
+);
+router.put(
+  '/sessions/:sessionId/group-details',
+  studySessionController.updateGroupDetails
+);
 
 // Filter routes
 router.get('/filter/subject/:subject', (req, res) => {
@@ -40,7 +52,9 @@ router.get('/filter/status/:status', (req, res) => {
 router.get('/filter/date-range', (req, res) => {
   const { startDate, endDate } = req.query;
   if (!startDate || !endDate) {
-    return res.status(400).json({ error: 'Both startDate and endDate are required' });
+    return res
+      .status(400)
+      .json({ error: 'Both startDate and endDate are required' });
   }
   studySessionController.getSessions(req, res);
 });
@@ -57,7 +71,10 @@ router.get('/', studySessionController.getSessions);
 
 // Interest management routes with dynamic parameters
 router.post('/:sessionId/interest', studySessionController.expressInterest);
-router.put('/:sessionId/interest/:userId', studySessionController.updateInterestStatus);
+router.put(
+  '/:sessionId/interest/:userId',
+  studySessionController.updateInterestStatus
+);
 router.get('/:sessionId/interests', studySessionController.getSessionInterests);
 
 // Dynamic parameter routes last
@@ -65,4 +82,4 @@ router.get('/:id', studySessionController.getSessionById);
 router.put('/:id', studySessionController.updateSession);
 router.delete('/:id', studySessionController.deleteSession);
 
-module.exports = router; 
+module.exports = router;

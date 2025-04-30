@@ -1,32 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+const userController = require('../controllers/userController');
+const {
+  validateRegistration,
+  validateLogin, // Ensure this middleware is correctly implemented
+} = require('../middleware/userMiddleware');
+const { authenticate } = require('../middleware/userMiddleware');
 
-// Register a new user
-router.post('/register', async (req, res) => {
-  try {
-    const user = new User(req.body);
-    await user.save();
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+router.post('/register', validateRegistration, userController.registerUser);
+router.post('/login', validateLogin, userController.loginUser); // Ensure validateLogin is correctly implemented
+// Forgot password route
+router.post('/forgot-password', userController.forgotPassword);
 
-// Login user
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: 'Invalid email or password' });
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) return res.status(400).json({ error: 'Invalid email or password' });
-    const token = user.generateAuthToken();
-    res.json({ token, user });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// Reset password route
+router.post('/reset-password/:token', userController.resetPassword);
+router.post('/signout', authenticate, userController.signout);
 
-module.exports = router; 
+// ... (social login routes can remain commented out or be added here)
+
+module.exports = router;
