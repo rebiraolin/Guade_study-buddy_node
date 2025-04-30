@@ -59,6 +59,7 @@ interestSchema.index({ user: 1, session: 1 }, { unique: true });
 interestSchema.index({ status: 1 });
 interestSchema.index({ 'notifications.read': 1 });
 
+
 // Method to add a notification
 interestSchema.methods.addNotification = function(type, message) {
   this.notifications.push({
@@ -104,6 +105,9 @@ interestSchema.statics.findSessionInterests = function(sessionId) {
     .populate('user', 'name email')
     .sort({ createdAt: -1 });
 };
+interestSchema.virtual('hasUnreadNotifications').get(function () {
+  return this.notifications.some((n) => !n.read);
+});
 
 const Interest = mongoose.model('Interest', interestSchema);
 

@@ -74,6 +74,10 @@ const studySessionSchema = new mongoose.Schema({
     },
     imageUrl: String
   },
+  maxParticipants: {
+  type: Number,
+  default: 10 // or your preferred default
+},
   tags: [{
     type: String,
     trim: true
@@ -93,6 +97,7 @@ const studySessionSchema = new mongoose.Schema({
       default: Date.now
     }
   }],
+
   studyMaterials: [{
     title: String,
     description: String,
@@ -109,6 +114,8 @@ studySessionSchema.index({ subject: 1, status: 1 });
 studySessionSchema.index({ courseCode: 1, status: 1 });
 studySessionSchema.index({ dateTime: 1, status: 1 });
 studySessionSchema.index({ creator: 1, status: 1 });
+studySessionSchema.index({ creator: 1, dateTime: -1 });
+
 
 // Index for text search with weights
 studySessionSchema.index({ 

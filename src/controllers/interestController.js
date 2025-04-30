@@ -2,54 +2,55 @@ const Interest = require('../models/Interest');
 const StudySession = require('../models/StudySession');
 
 // Express interest in a session
-exports.expressInterest = async (req, res) => {
-  try {
-    const { sessionId } = req.params;
-    const { userId, message, studyPreferences } = req.body;
+const expressInterest = async (req, res) => {
+    try {
+        const { sessionId } = req.params;
+        const userId = req.user.userId; // Get userId from authenticated user's token
+        const { message, studyPreferences } = req.body;
 
-    // Check if session exists
-    const session = await StudySession.findById(sessionId);
-    if (!session) {
-      return res.status(404).json({ error: 'Session not found' });
+        // Check if session exists
+        const session = await StudySession.findById(sessionId);
+        if (!session) {
+            return res.status(404).json({ error: 'Session not found' });
+        }
+
+        // Check if session is full
+        if (session.isFull) {
+            return res.status(400).json({ error: 'Session is full' });
+        }
+
+        // Check if user already expressed interest
+        const existingInterest = await Interest.findOne({
+            user: userId,
+            session: sessionId
+        });
+
+        if (existingInterest) {
+            return res.status(400).json({ error: 'Already expressed interest in this session' });
+        }
+
+        // Create new interest
+        const interest = new Interest({
+            user: userId,
+            session: sessionId,
+            message,
+            studyPreferences
+        });
+
+        await interest.save();
+
+        // Add to session's interested users
+        session.addInterestedUser(userId);
+        await session.save();
+
+        res.status(201).json(interest);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-
-    // Check if session is full
-    if (session.isFull) {
-      return res.status(400).json({ error: 'Session is full' });
-    }
-
-    // Check if user already expressed interest
-    const existingInterest = await Interest.findOne({
-      user: userId,
-      session: sessionId
-    });
-
-    if (existingInterest) {
-      return res.status(400).json({ error: 'Already expressed interest in this session' });
-    }
-
-    // Create new interest
-    const interest = new Interest({
-      user: userId,
-      session: sessionId,
-      message,
-      studyPreferences
-    });
-
-    await interest.save();
-
-    // Add to session's interested users
-    session.addInterestedUser(userId);
-    await session.save();
-
-    res.status(201).json(interest);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
 };
 
 // Update interest status
-exports.updateInterestStatus = async (req, res) => {
+const updateInterestStatus = async (req, res) => {
   try {
     const { sessionId, userId } = req.params;
     const { status, message } = req.body;
@@ -85,7 +86,7 @@ exports.updateInterestStatus = async (req, res) => {
 };
 
 // Get user's interests
-exports.getUserInterests = async (req, res) => {
+const getUserInterests = async (req, res) => {
   try {
     const { userId } = req.query;
     const { page = 1, limit = 10, status } = req.query;
@@ -116,7 +117,7 @@ exports.getUserInterests = async (req, res) => {
 };
 
 // Get session interests
-exports.getSessionInterests = async (req, res) => {
+const getSessionInterests = async (req, res) => {
   try {
     const { sessionId } = req.params;
     const { page = 1, limit = 10, status } = req.query;
@@ -153,7 +154,7 @@ exports.getSessionInterests = async (req, res) => {
 };
 
 // Cancel interest
-exports.cancelInterest = async (req, res) => {
+const cancelInterest = async (req, res) => {
   try {
     const { sessionId } = req.params;
     const { userId } = req.body;
@@ -186,7 +187,7 @@ exports.cancelInterest = async (req, res) => {
 };
 
 // Get user's notifications
-exports.getUserNotifications = async (req, res) => {
+const getUserNotifications = async (req, res) => {
   try {
     const userId = req.user._id; // Get userId from authenticated user
     const { page = 1, limit = 10, unreadOnly = false } = req.query;
@@ -236,7 +237,7 @@ exports.getUserNotifications = async (req, res) => {
 };
 
 // Mark notifications as read
-exports.markNotificationsAsRead = async (req, res) => {
+const markNotificationsAsRead = async (req, res) => {
   try {
     const userId = req.user._id; // Get userId from authenticated user
     const { notificationIds } = req.body;
@@ -272,4 +273,13 @@ exports.markNotificationsAsRead = async (req, res) => {
   }
 };
 
-module.exports = exports; 
+module.exports = {
+  expressInterest,
+  updateInterestStatus,
+  getUserInterests,
+  getSessionInterests,
+  cancelInterest,
+  getUserNotifications,
+  markNotificationsAsRead,
+};
+
