@@ -118,7 +118,6 @@ Run the test suite:
 ```bash
 npm test
 ```
-
 ## 📦 Project Structure
 study-buddy-api/
 ├── src/
