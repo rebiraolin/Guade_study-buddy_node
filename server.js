@@ -64,7 +64,8 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("home");
+  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  res.render("home", { base_url: baseUrl });
 });
 
 io.on('connection', (socket) => {
