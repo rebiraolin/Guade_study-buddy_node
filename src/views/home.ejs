@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guade Study Buddy API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 28px;
+        }
+        h2 {
+            font-size: 24px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        a {
+            color: #0078d7;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        strong {
+            color: #222;
+        }
+        .endpoint-section {
+            margin-top: 30px;
+        }
+        .endpoint-block {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .endpoint-block h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #444;
+        }
+        .endpoint-block p {
+            margin-bottom: 5px;
+        }
+        .endpoint-block strong {
+            display: inline-block;
+            min-width: 100px;
+        }
+        .endpoint-block ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .endpoint-block li {
+            margin-bottom: 5px;
+        }
+        pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Guade Study Buddy API Documentation</h1>
+        <p>Welcome to the API documentation for Guade Study Buddy, a collaborative platform that connects students for academic growth.</p>
+
+        <h2>Key Features</h2>
+        <ul>
+            <li>👥 User Authentication & Authorization</li>
+            <li>📚 Study Session Management</li>
+            <li>👥 Buddy Group System</li>
+            <li>💬 Real-time Chat</li>
+            <li>📝 Posts and Comments</li>
+            <li>🔍 Search Functionality</li>
+            <li>📅 Session Scheduling</li>
+            <li>🎯 Interest-based Matching</li>
+        </ul>
+
+        <h2>Technologies Used</h2>
+        <ul>
+            <li><strong>Node.js:</strong> Runtime environment</li>
+            <li><strong>Express.js:</strong> Web framework</li>
+            <li><strong>MongoDB:</strong> NoSQL database</li>
+            <li><strong>Mongoose:</strong> ODM for MongoDB</li>
+            <li><strong>JWT:</strong> Authentication</li>
+            <li><strong>Multer:</strong> File uploads</li>
+            <li><strong>Socket.io:</strong> Real-time features</li>
+            <li><strong>Google OAuth:</strong> Social login</li>
+             <li><strong>Nodemailer:</strong> Email sending</li>
+            <li><strong>bcryptjs:</strong> Password hashing</li>
+            <li><strong>dotenv:</strong> Environment variables</li>
+            <li><strong>express-validator:</strong> Input validation</li>
+            <li><strong>Morgan:</strong> HTTP request logging</li>
+            <li><strong>Nodemon:</strong> Development server restart</li>
+            <li><strong>RESTful API:</strong> API architecture</li>
+            <li><strong>MVC Architecture:</strong> Code organization</li>
+            <li><strong>File System (fs):</strong> File management</li>
+            <li><strong>Postman:</strong> API testing</li>
+        </ul>
+
+        <h2>Prerequisites</h2>
+        <ul>
+            <li>Node.js (v14 or higher)</li>
+            <li>MongoDB</li>
+            <li>npm or yarn</li>
+        </ul>
+
+        <h2>Installation</h2>
+        <ol>
+            <li>Clone the repository: <code>git clone <a href="https://github.com/rebiraolin/Guade_study-buddy_node.git">https://github.com/rebiraolin/Guade_study-buddy_node.git</a></code></li>
+            <li>Navigate to the directory: <code>cd study-buddy-api</code></li>
+            <li>Install dependencies: <code>npm install</code></li>
+            <li>Create a <code>.env</code> file with the following variables:
+                <pre><code>
+MONGODB_URI=mongodb://your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+PORT=5000
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+EMAIL_SERVICE=your_email_service
+EMAIL_USER=your_email_username
+EMAIL_PASSWORD=your_email_password
+                </code></pre>
+            </li>
+            <li>Start the server:
+                <ul>
+                    <li>Development mode: <code>npm run dev</code></li>
+                    <li>Production mode: <code>npm start</code></li>
+                </ul>
+            </li>
+        </ol>
+
+        <div class="endpoint-section">
+            <h2>API Endpoints</h2>
+             <p>
+                All endpoints are relative to the base URL:
+                <%= base_url %>  <%# Assuming you pass this from your Node.js server %>
+            </p>
+            <h3>User Authentication Routes</h3>
+            <div class="endpoint-block">
+                <h4>POST /api/users/register</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Register a new user.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/users/login</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Log in a user and receive JWT token.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/users/forgot-password</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Request password reset via email.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/users/reset-password/:token</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Reset password using the provided token.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                    <li><code>token</code>: The password reset token.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/users/signout</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Sign out the user (requires authentication).</p>
+            </div>
+
+            <h3>Google Authentication Route</h3>
+            <div class="endpoint-block">
+                <h4>POST /api/google/google-login</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Log in or register via Google account.</p>
+            </div>
+
+            <h3>Buddy System Routes</h3>
+            <div class="endpoint-block">
+                <h4>POST /api/buddies/groups</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Create a new buddy group.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/buddies/groups</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> List all buddy groups.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/buddies/groups/:groupId</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get details of a specific buddy group.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>groupId</code>: The ID of the buddy group.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/buddies/groups/:groupId/join</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Join a specific buddy group.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>groupId</code>: The ID of the buddy group to join.</li>
+                </ul>
+            </div>
+             <div class="endpoint-block">
+                <h4>POST /api/buddies/groups/:groupId/invite</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Invite a user to a buddy group.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>groupId</code>: The ID of the buddy group.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/buddies/groups/:groupId/request</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Request to join a buddy group.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>groupId</code>: The ID of the buddy group.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/buddies/groups/:groupId/requests</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> List join requests for a buddy group.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>groupId</code>: The ID of the buddy group.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/buddies/groups/:groupId/approve</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Approve a join request to a buddy group.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>groupId</code>: The ID of the buddy group.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/buddies/groups/:groupId/decline</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Decline a join request to a buddy group.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>groupId</code>: The ID of the buddy group.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/buddies/popular</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get a list of popular buddies.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/buddies/my</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get the current user's buddies.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/buddies/search</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Search for buddies.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/buddies/:userId</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get a specific user's buddy profile.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>userId</code>: The ID of the user.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/buddies/requests</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get buddy requests sent to the current user.</p>
+            </div>
+
+            <h3>Chat Routes</h3>
+            <div class="endpoint-block">
+                <h4>GET /api/chat/messages</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get chat messages (authenticated).</p>
+            </div>
+
+            <h3>Interest & Notification Routes</h3>
+            <div class="endpoint-block">
+                <h4>PUT /api/interest/test</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Test route to check if interest routes work.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/interest/:sessionId</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Express interest in a study session (authenticated).</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the study session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/interest/:sessionId/users/:userId</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Update a user's interest status (authenticated).</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the study session.</li>
+                      <li><code>userId</code>: The ID of the user.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>DELETE /api/interest/:sessionId</h4>
+                <p><strong>Method:</strong> DELETE</p>
+                <p><strong>Description:</strong> Cancel user's interest in a session (authenticated).</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/interest/user</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get current user's interests (authenticated).</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/interest/:sessionId/all</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get all interests for a specific session (authenticated).</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/interest/notifications</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get user's interest-related notifications (authenticated).</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/interest/notifications/read</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Mark notifications as read (authenticated).</p>
+            </div>
+
+            <h3>Post Routes (Interest & Notifications)</h3>
+             <div class="endpoint-block">
+                <h4>PUT /api/post/test</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Test route to verify post routes work.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/post/:sessionId</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Express interest in a session (authenticated).</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/post/:sessionId/users/:userId</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Update interest status for a user (authenticated).</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                      <li><code>userId</code>: The ID of the user.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>DELETE /api/post/:sessionId</h4>
+                <p><strong>Method:</strong> DELETE</p>
+                <p><strong>Description:</strong> Cancel interest in a session (authenticated).</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/post/user</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Retrieve user's interested sessions (authenticated).</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/post/:sessionId/all</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Retrieve all interests for a session (authenticated).</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/post/notifications</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get notifications related to interests (authenticated).</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/post/notifications/read</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Mark notifications as read (authenticated).</p>
+            </div>
+
+            <h3>Profile Route</h3>
+            <div class="endpoint-block">
+                <h4>PUT /api/profile</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Edit user profile including profile picture (authenticated, uses multipart/form-data).</p>
+            </div>
+
+            <h3>Resource Routes</h3>
+            <h4>Articles</h4>
+            <div class="endpoint-block">
+                <h4>GET /api/resources/articles</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Retrieve all articles.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/resources/articles</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Create a new article.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/resources/articles/:id</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Update an article by ID.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>id</code>: The ID of the article.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>DELETE /api/resources/articles/:id</h4>
+                <p><strong>Method:</strong> DELETE</p>
+                <p><strong>Description:</strong> Delete an article by ID.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>id</code>: The ID of the article.</li>
+                </ul>
+            </div>
+
+            <h4>Documents</h4>
+            <div class="endpoint-block">
+                <h4>GET /api/resources/documents</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Retrieve all documents.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/resources/documents</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Upload and create a new document (file).</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/resources/documents/:id</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Update a document and replace file.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>id</code>: The ID of the document.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>DELETE /api/resources/documents/:id</h4>
+                <p><strong>Method:</strong> DELETE</p>
+                <p><strong>Description:</strong> Delete a document by ID.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>id</code>: The ID of the document.</li>
+                </ul>
+            </div>
+
+            <h4>Videos</h4>
+            <div class="endpoint-block">
+                <h4>GET /api/resources/videos</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Retrieve all videos.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>POST /api/resources/videos</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Upload and create a new video.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/resources/videos/:id</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Update a video and replace file.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>id</code>: The ID of the video.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>DELETE /api/resources/videos/:id</h4>
+                <p><strong>Method:</strong> DELETE</p>
+                <p><strong>Description:</strong> Delete a video by ID.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>id</code>: The ID of the video.</li>
+                </ul>
+            </div>
+
+            <h4>Search (resource)</h4>
+             <div class="endpoint-block">
+                <h4>GET /api/resources/search</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Search across all resources.</p>
+            </div>
+
+            <h3>Search Routes</h3>
+            <div class="endpoint-block">
+                <h4>GET /api/search/advanced</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Perform advanced search with multiple filters.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/search/text</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Full-text search across sessions.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/search/subject/:subject</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get sessions filtered by subject.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>subject</code>: The subject to filter by.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/search/course/:courseCode</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get sessions filtered by course code.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>courseCode</code>: The course code to filter by.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/search/date-range</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get sessions within a specific date range.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>startDate</code>: The start date.</li>
+                     <li><code>endDate</code>: The end date.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/search/available-spots</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get sessions that have available spots.</p>
+            </div>
+
+            <h3>Study sessions Routes</h3>
+            <h4>Filter and search routes</h4>
+             <div class="endpoint-block">
+                <h4>GET /api/study-sessions/filter/subject/:subject</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Filter sessions by subject.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>subject</code>: The subject to filter by.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/filter/course/:courseCode</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Filter sessions by course code.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>courseCode</code>: The course code to filter by.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/filter/type/:sessionType</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Filter sessions by session type.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionType</code>: The type of session to filter by.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/filter/status/:status</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong>Filter sessions by status.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>status</code>: The status of the session to filter by.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/filter/date-range?startDate&endDate</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Filter sessions within a date range.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>startDate</code>: The start date for the filter.</li>
+                     <li><code>endDate</code>: The end date for the filter.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/search/:query</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Search sessions by keyword.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>query</code>: The keyword to search for.</li>
+                </ul>
+            </div>
+
+            <h4>session managment</h4>
+            <div class="endpoint-block">
+                <h4>POST /api/study-sessions/</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Create a new study session.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get all sessions.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/:id</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get session by ID.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>id</code>: The ID of the session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/study-sessions/:id</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Update session by ID.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>id</code>: The ID of the session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>DELETE /api/study-sessions/:id</h4>
+                <p><strong>Method:</strong> DELETE</p>
+                <p><strong>Description:</strong> Delete session by ID.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>id</code>: The ID of the session.</li>
+                </ul>
+            </div>
+
+            <h4>session details and updates</h4>
+            <div class="endpoint-block">
+                <h4>PUT /api/study-sessions/sessions/:sessionId/topics</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Update session topics.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/study-sessions/sessions/:sessionId/group-details</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Update session's group details.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                </ul>
+            </div>
+
+            <h4>Group-specfic routes</h4>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/groups/:groupId/next</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get next session for a group.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>groupId</code>: The ID of the group.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/groups/:groupId/upcoming</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get upcoming sessions for a group.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>groupId</code>: The ID of the group.</li>
+                </ul>
+            </div>
+
+            <h4>Time based and interest routes</h4>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/upcoming/hour</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get upcoming sessions within the next hour.</p>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/user/interests</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get sessions the user is interested in.</p>
+            </div>
+             <div class="endpoint-block">
+                <h4>POST /api/study-sessions/:sessionId/interest</h4>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Description:</strong> Express interest in a session.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>PUT /api/study-sessions/:sessionId/interest/:userId</h4>
+                <p><strong>Method:</strong> PUT</p>
+                <p><strong>Description:</strong> Update interest status.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                     <li><code>userId</code>: The ID of the user.</li>
+                </ul>
+            </div>
+            <div class="endpoint-block">
+                <h4>GET /api/study-sessions/:sessionId/interests</h4>
+                <p><strong>Method:</strong> GET</p>
+                <p><strong>Description:</strong> Get all interests for a session.</p>
+                 <p><strong>Parameters:</strong></p>
+                <ul>
+                     <li><code>sessionId</code>: The ID of the session.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Authentication</h2>
+        <p>Most endpoints require authentication.  Include the JWT token in the Authorization header:</p>
+        <p><code>Authorization: Bearer &lt;your_token&gt;</code></p>
+
+        <h2>Real-time Features</h2>
+        <p>The API uses Socket.IO for real-time features:</p>
+        <ul>
+            <li>Chat messages</li>
+            <li>Study session updates</li>
+            <li>Group notifications</li>
+             <li>Online status</li>
+        </ul>
+
+        <h2>Testing</h2>
+        <p>Run the test suite:</p>
+        <p><code>npm test</code></p>
+
+        <h2>Project Structure</h2>
+        <pre><code>
+study-buddy-api/
+├── src/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   └── views/
+├── server.js
+├── package.json
+└── README.md
+        </code></pre>
+
+        <h2>Contributing</h2>
+        <ol>
+            <li>Fork the repository</li>
+            <li>Create your feature branch (<code>git checkout -b feature/amazing-feature</code>)</li>
+            <li>Commit your changes (<code>git commit -m 'Add some amazing feature'</code>)</li>
+            <li>Push to the branch (<code>git push origin feature/amazing-feature</code>)</li>
+            <li>Open a Pull request</li>
+        </ol>
+
+        <h2>Acknowledgments</h2>
+        <ul>
+            <li>Node.js community</li>
+            <li>MongoDB team</li>
+            <li>Express.js contributors</li>
+        </ul>
+    </div>
+</body>
+</html>
