@@ -219,6 +219,12 @@ npm start
 | PUT    | `/api/study-sessions/:id` | Update session by ID       |
 | DELETE | `/api/study-sessions/:id` | Delete session by ID       |
 
+Video Call Sessions Management
+| **Method** | **Endpoint**                           | **Description**                                          | 
+| ---------- | -------------------------------------- | -------------------------------------------------------- |
+| `GET`      | `/api/sessions/:sessionId/agora-token` | Generate Agora token for a specific session (video call) |   
+
+
    session details and updates 
 
 | Method | Endpoint                                                | Description                    |
