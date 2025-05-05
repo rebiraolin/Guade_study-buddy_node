@@ -1,7 +1,61 @@
 const StudySession = require('../models/StudySession');
 const Interest = require('../models/Interest');
 const { validateSessionData } = require('../utils/validators');
+const { RtcTokenBuilder, RtcRole } = require('agora-access-token');
+const agoraAppId = process.env.AGORA_APP_ID;
+const agoraAppCertificate = process.env.AGORA_APP_CERTIFICATE;
 
+exports.generateAgoraToken = async (req, res) => {
+  const { sessionId } = req.params;
+  const userId = req.user.userId; // Assuming your authenticate middleware sets req.user.userId
+
+  if (!agoraAppId || !agoraAppCertificate) {
+    console.error(
+      'Agora App ID or App Certificate not configured in environment variables.'
+    );
+    return res.status(500).json({ error: 'Agora configuration error.' });
+  }
+
+  if (!sessionId) {
+    return res.status(400).json({ error: 'Session ID is required.' });
+  }
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
+  }
+
+  try {
+    // Verify if the study session exists (optional but recommended)
+    const session = await StudySession.findById(sessionId);
+    if (!session) {
+      return res.status(404).json({ error: 'Study session not found.' });
+    }
+
+    // The channel name should be unique to the study session
+    const channelName = sessionId;
+    const uid = userId; // Use the user ID as the unique identifier
+
+    const role = RtcRole.PUBLISHER; // Or RtcRole.SUBSCRIBER if the user is just joining
+    const expirationTimeInSeconds = 3600; // Token expires in 1 hour
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
+
+    // Build the token
+    const token = RtcTokenBuilder.buildTokenWithUid(
+      agoraAppId,
+      agoraAppCertificate,
+      channelName,
+      parseInt(uid),
+      role,
+      privilegeExpiredTs
+    );
+
+    res.json({ token });
+  } catch (error) {
+    console.error('Error generating Agora token:', error);
+    res.status(500).json({ error: 'Failed to generate Agora token.' });
+  }
+};
 // Create a new study session
 exports.createSession = async (req, res) => {
     try {

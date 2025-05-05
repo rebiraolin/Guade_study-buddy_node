@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const studySessionController = require('../controllers/studySessionController');
 const { authenticate } = require('../middleware/userMiddleware'); // ✅ destructure authenticate
-
+const { RtcTokenBuilder, RtcRole } = require('agora-access-token');
 // Apply authentication middleware to all routes
 router.use(authenticate); // ✅ now this is a function
 
@@ -18,6 +18,11 @@ router.get(
 router.get(
   '/groups/:groupId/upcoming',
   studySessionController.getGroupUpcomingSessions
+);
+router.get(
+  '/sessions/:sessionId/agora-token',
+  authenticate,
+  studySessionController.generateAgoraToken
 );
 router.put(
   '/sessions/:sessionId/topics',

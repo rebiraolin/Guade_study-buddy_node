@@ -3,6 +3,7 @@ const router = express.Router();
 const searchController = require('../controllers/searchController');
 const {authenticate} = require('../middleware/userMiddleware');
 
+
 // Apply authentication middleware to all routes
 router.use(authenticate);
 
